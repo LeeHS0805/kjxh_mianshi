@@ -2,32 +2,40 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path:'/',
-    redirect:'/admin'
+const routes = [{
+    path: '/',
+    redirect: '/admin'
   },
   {
     path: '/admin',
     name: 'admin',
-    component: () => import(/* webpackChunkName: "about" */ '../views/admin'),
-    children:[
-      {
+    component: () => import( /* webpackChunkName: "about" */ '../views/admin'),
+    children: [{
         path: '/info',
         name: 'info',
-        component: () => import(/* webpackChunkName: "about" */ '../views/info')
+        component: () => import( /* webpackChunkName: "about" */ '../views/info'),
+      },
+      {
+        path: '/weightChange',
+        name: "weightChange",
+        component: () => import('../components/info/weightChange.vue')
+      },
+      {
+        path: '/stuDetails/:id',
+        component: () => import('../components/info/stuDetails.vue'),
+        props: true
       },
       {
         path: '/interview',
         name: 'interview',
-        component: () => import(/* webpackChunkName: "about" */ '../views/interview')
+        component: () => import( /* webpackChunkName: "about" */ '../views/interview')
       }
     ]
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/login')
+    component: () => import( /* webpackChunkName: "about" */ '../views/login')
   }
 ]
 
