@@ -12,17 +12,31 @@
                             class="el-menu-vertical-demo"
                             @open="handleOpen"
                             @close="handleClose">
+                        <el-submenu index="1">
+                            <template slot="title">
+                                <i class="el-icon-location"></i>
+                                <span>开始面试</span>
+                            </template>
+                            <el-menu-item-group>
+                                <el-menu-item index="1-1" @click="selectPlace(1)">
+                                    115工作区
+                                </el-menu-item>
+                                <el-menu-item index="1-2" @click="selectPlace(2)">
+                                    115会议室
+                                </el-menu-item>
+                                <el-menu-item index="1-3" @click="selectPlace(3)">
+                                    221
+                                </el-menu-item>
+                                <el-menu-item index="1-4" @click="selectPlace(4)">
+                                    222
+                                </el-menu-item>
+                            </el-menu-item-group>
+                        </el-submenu>
                         <el-menu-item index="1">
                             <i class="el-icon-menu"></i>
                             <span slot="title">
-                <router-link to="/info" tag="span">查看信息</router-link>
-              </span>
-                        </el-menu-item>
-                        <el-menu-item index="2">
-                            <i class="el-icon-setting"></i>
-                            <span slot="title">
-                <router-link to="/interview" tag="span">开始面试</router-link>
-              </span>
+                                <router-link to="/info" tag="span">查看信息</router-link>
+                            </span>
                         </el-menu-item>
                     </el-menu>
                 </el-aside>
@@ -36,18 +50,24 @@
 <script>
     export default{
         name:'admin',
+        data(){
+            return{
+            }
+        },
         methods: {
-            handleOpen(key, keyPath) {
-                console.log(key, keyPath);
-            },
-            handleClose(key, keyPath) {
-                console.log(key, keyPath);
+            selectPlace(path){
+                this.$router.replace({
+                    path:`/interview`,
+                    query:{
+                        path:path
+                    }
+                }).catch(err=>{err})
             }
         }
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
     .el-header, .el-footer {
         position: relative;

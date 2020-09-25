@@ -21,6 +21,11 @@ const routes = [
         path: '/interview',
         name: 'interview',
         component: () => import(/* webpackChunkName: "about" */ '../views/interview')
+      },
+      {
+        path: '/interviewInfo',
+        name: 'interviewInfo',
+        component: () => import(/* webpackChunkName: "about" */ '../components/interview-info')
       }
     ]
   },
@@ -38,3 +43,5 @@ const router = new VueRouter({
 })
 
 export default router
+
+
