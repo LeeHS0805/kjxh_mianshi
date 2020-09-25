@@ -18,7 +18,7 @@
       </el-table>
       <p class="score">
         <span>平均分：</span>
-        <span class="ans">{{all.score1}}</span>
+        <span class="ans">{{ all.score1 }}</span>
       </p>
     </div>
     <el-divider></el-divider>
@@ -27,7 +27,7 @@
       <el-table></el-table>
       <p class="score">
         <span>平均分：</span>
-        <span class="ans">{{all.score2}}</span>
+        <span class="ans">{{ all.score2 }}</span>
       </p>
     </div>
   </div>
@@ -79,60 +79,8 @@ export default {
     id: String,
   },
   mounted() {
-    //遮罩层开启
-    this.$store.commit("toggleOverLay");
     //获取新生的详细信息
-    api.getDetails(this.id);
-    //接口例子
-    let res = {
-      status: 0,
-      data: [
-        {
-          interviewer: "徐浩瀚",
-          aspect1: 98,
-          aspect2: 92,
-          aspect3: 98,
-          aspect4: 92,
-          tag1: [12, 23, 34, 45],
-          tag2: [12, 45],
-          tag3: [12, 34, 45],
-          tag4: [],
-          task: "完成task3",
-          comment: "这⼩⼦可以",
-        },
-        {
-          interviewer: "彭业诚",
-          aspect1: 98,
-          aspect2: 92,
-          aspect3: 98,
-          aspect4: 92,
-          tag1: [12, 23, 34, 45],
-          tag2: [12, 45],
-          tag3: [12, 34, 45],
-          tag4: [],
-          task: "完成task3",
-          comment: "这⼩⼦可以",
-        },
-      ],
-      score1: 97,
-      score2: 95,
-    };
-    //处理接受信息
-    if (res.status === 0) {
-      this.first = res.data[0];
-      this.second = res.data[1];
-      this.score1 = res.score1;
-      this.score2 = res.score2;
-    } else {
-      this.$message({
-        type: "error",
-        message: res.message,
-      });
-    }
-    //关闭
-    setTimeout(() => {
-      this.$store.commit("toggleOverLay");
-    }, 1000);
+    api.getDetails(this.id, this);
   },
   methods: {
     back() {

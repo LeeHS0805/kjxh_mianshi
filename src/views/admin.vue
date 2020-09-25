@@ -9,7 +9,11 @@
 
       <el-container class="asideNav">
         <el-aside width="150px">
-          <el-menu default-active="1" class="el-menu-vertical-demo" @select="asideSwith">
+          <el-menu
+            default-active="1"
+            class="el-menu-vertical-demo"
+            @select="asideSwith"
+          >
             <el-menu-item index="info">
               <i class="el-icon-menu"></i>
               <span slot="title">信息管理</span>
@@ -61,6 +65,7 @@ export default {
       font-size: 28px;
       font-weight: 600;
       letter-spacing: 4px;
+      min-width: 600px;
     }
     .el-button {
       position: absolute;
@@ -81,6 +86,7 @@ export default {
 
   .el-main {
     background-color: #e9eef3;
+    min-width: 600px;
   }
 }
 

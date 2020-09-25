@@ -8,23 +8,61 @@
       <div class="warp2">
         <el-button>导出excel</el-button>
         <el-button @click="switchTo('weightChange')">修改权值</el-button>
-        <el-button @click="timeChange = !timeChange">开启修改时间面板</el-button>
+        <el-button @click="timeChange = !timeChange"
+          >开启修改时间面板</el-button
+        >
       </div>
     </header>
 
-    <el-table :data="tableData" @row-click="forDetail" @selection-change="batchChange">
+    <el-table
+      :data="tableData"
+      @row-click="forDetail"
+      @selection-change="batchChange"
+    >
       <el-table-column type="selection" v-if="timeChange"></el-table-column>
-      <el-table-column prop="studentId" label="学号" align="center"></el-table-column>
-      <el-table-column align="center" prop="name" label="姓名"></el-table-column>
-      <el-table-column align="center" prop="class" label="班级"></el-table-column>
-      <el-table-column align="center" prop="time1" label="一面时间"></el-table-column>
-      <el-table-column align="center" prop="score1" label="一面分数"></el-table-column>
-      <el-table-column align="center" prop="time2" label="二面时间"></el-table-column>
-      <el-table-column align="center" prop="score2" label="二面分数"></el-table-column>
+      <el-table-column
+        prop="studentId"
+        label="学号"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        align="center"
+        prop="name"
+        label="姓名"
+      ></el-table-column>
+      <el-table-column
+        align="center"
+        prop="class"
+        label="班级"
+      ></el-table-column>
+      <el-table-column
+        align="center"
+        prop="time1"
+        label="一面时间"
+      ></el-table-column>
+      <el-table-column
+        align="center"
+        prop="score1"
+        label="一面分数"
+      ></el-table-column>
+      <el-table-column
+        align="center"
+        prop="time2"
+        label="二面时间"
+      ></el-table-column>
+      <el-table-column
+        align="center"
+        prop="score2"
+        label="二面分数"
+      ></el-table-column>
       <el-table-column label="动作" align="center">
         <template v-slot="scope">
           <div class="action">
-            <el-button :disabled="!timeChange" @click.stop="singalOpenChange(scope.row)">修改面试时间</el-button>
+            <el-button
+              :disabled="!timeChange"
+              @click.stop="singalOpenChange(scope.row)"
+              >修改面试时间</el-button
+            >
           </div>
         </template>
       </el-table-column>
@@ -37,7 +75,11 @@
       </div>
     </transition>
 
-    <Modal v-model="timeChangeWindow.show" @on-ok="sendChange" @on-cancel="cancelChange">
+    <Modal
+      v-model="timeChangeWindow.show"
+      @on-ok="sendChange"
+      @on-cancel="cancelChange"
+    >
       <div class="level1" v-if="timeChangeWindow.step1">
         <el-button @click="singalOpenChange2(1)">修改一面时间</el-button>
         <el-button @click="singalOpenChange2(2)">修改二面时间</el-button>
@@ -54,10 +96,10 @@
           <el-time-select
             v-model="timeChangeWindow.timeHour"
             :picker-options="{
-            start: '00:00',
-            step: '00:30',
-            end: '23:30',
-          }"
+              start: '00:00',
+              step: '00:30',
+              end: '23:30',
+            }"
             placeholder="选择时间"
           ></el-time-select>
         </div>
@@ -90,41 +132,7 @@ export default {
     //获取uuid
     let uuid = "";
     //获取全部信息
-    infoApi.getAllStudents(uuid);
-    //返回接口例子
-    let res = {
-      status: 0,
-      students: [
-        {
-          studentId: 1,
-          name: "ss",
-          class: "sdf",
-          time1: "s",
-          time2: "sdddfs",
-          score1: 44,
-          score2: 66,
-        },
-        {
-          studentId: 551,
-          name: "ss",
-          class: "sdf",
-          time1: "s",
-          time2: "sdddfs",
-          score1: 123,
-          score2: 5,
-        },
-      ],
-      msg: "",
-    };
-    //处理返回信息
-    if (res.status === 0) {
-      this.tableData = res.students;
-    } else {
-      this.$message({
-        type: "error",
-        message: res.content,
-      });
-    }
+    infoApi.getAllStudents(uuid, this);
   },
   methods: {
     //切换到修改权值窗口
@@ -184,14 +192,9 @@ export default {
           this.timeChangeWindow.timeDate + " " + this.timeChangeWindow.timeHour,
       };
       //发送数据
-      infoApi.changeTime(data);
+      infoApi.changeTime(data, this);
       //重制步骤
       this.timeChangeWindow.step1 = true;
-      //遮罩开启
-      this.$store.commit("toggleOverLay");
-      setTimeout(() => {
-        this.$store.commit("toggleOverLay");
-      }, 1000);
     },
     //取消修改
     cancelChange() {
