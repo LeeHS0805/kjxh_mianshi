@@ -130,7 +130,7 @@ export default {
   },
   mounted() {
     //获取uuid
-    let uuid = "";
+    let uuid = sessionStorage.getItem("uuid");
     //获取全部信息
     infoApi.getAllStudents(uuid, this);
   },
@@ -185,7 +185,7 @@ export default {
       }
       //生成数据
       let data = {
-        uuid: "",
+        uuid: sessionStorage.getItem("uuid"),
         studentId: this.timeChangeWindow.studentId,
         interview: this.timeChangeWindow.interview,
         time:

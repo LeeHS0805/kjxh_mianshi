@@ -1,10 +1,9 @@
 <template>
   <div id="admin">
-    <overLay></overLay>
     <el-container class="top">
       <el-header>
         学生创新实践中心 - 科技协会面试平台
-        <el-button type="danger">退出平台</el-button>
+        <el-button type="danger" @click="logout">退出平台</el-button>
       </el-header>
 
       <el-container class="asideNav">
@@ -18,10 +17,26 @@
               <i class="el-icon-menu"></i>
               <span slot="title">信息管理</span>
             </el-menu-item>
-            <el-menu-item index="interview">
-              <i class="el-icon-setting"></i>
-              <span slot="title">开始面试</span>
-            </el-menu-item>
+            <el-submenu index="1">
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <span>开始面试</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="1-1" @click="selectPlace(1)">
+                  115工作区
+                </el-menu-item>
+                <el-menu-item index="1-2" @click="selectPlace(2)">
+                  115会议室
+                </el-menu-item>
+                <el-menu-item index="1-3" @click="selectPlace(3)">
+                  221
+                </el-menu-item>
+                <el-menu-item index="1-4" @click="selectPlace(4)">
+                  222
+                </el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
           </el-menu>
         </el-aside>
 
@@ -36,17 +51,31 @@
 </template>
 
 <script>
-import overLay from "@/layout/overLay.vue";
-
 export default {
   name: "admin",
+  mounted() {
+    this.$router.push({ name: "welcome" });
+  },
   methods: {
     asideSwith(name) {
       this.$router.push({ name: name });
     },
-  },
-  components: {
-    overLay,
+    selectPlace(path) {
+      this.$router
+        .replace({
+          path: `/interview`,
+          query: {
+            path: path,
+          },
+        })
+        .catch((err) => {
+          err;
+        });
+    },
+    logout() {
+      this.$router.push({ name: "login" });
+      sessionStorage.clear("uuid");
+    },
   },
 };
 </script>

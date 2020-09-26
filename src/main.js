@@ -15,7 +15,7 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(animated);
 Vue.component("Modal", Modal);
-Vue.component('Spin', Spin)
+Vue.component('Spin', Spin);
 
 new Vue({
   router,

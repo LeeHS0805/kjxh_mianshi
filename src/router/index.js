@@ -4,13 +4,18 @@ Vue.use(VueRouter)
 
 const routes = [{
     path: '/',
-    redirect: '/admin'
+    redirect: '/login'
   },
   {
     path: '/admin',
     name: 'admin',
     component: () => import( /* webpackChunkName: "about" */ '../views/admin'),
     children: [{
+        path: '/welcome',
+        name: 'welcome',
+        component: () => import('../components/info/welcome.vue')
+      },
+      {
         path: '/info',
         name: 'info',
         component: () => import( /* webpackChunkName: "about" */ '../views/info'),
@@ -29,6 +34,11 @@ const routes = [{
         path: '/interview',
         name: 'interview',
         component: () => import( /* webpackChunkName: "about" */ '../views/interview')
+      },
+      {
+        path: '/interviewInfo',
+        name: 'interviewInfo',
+        component: () => import( /* webpackChunkName: "about" */ '../components/interview-info')
       }
     ]
   },
@@ -40,7 +50,7 @@ const routes = [{
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
