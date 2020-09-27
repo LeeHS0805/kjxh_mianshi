@@ -11,33 +11,17 @@
           <el-menu
             default-active="1"
             class="el-menu-vertical-demo"
-            @select="asideSwith"
           >
-            <el-menu-item index="info">
+            <el-menu-item index="info" @click="asideSwith('info')">
               <i class="el-icon-menu"></i>
               <span slot="title">信息管理</span>
             </el-menu-item>
-            <el-submenu index="1">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>开始面试</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1" @click="selectPlace(1)">
-                  115工作区
-                </el-menu-item>
-                <el-menu-item index="1-2" @click="selectPlace(2)">
-                  115会议室
-                </el-menu-item>
-                <el-menu-item index="1-3" @click="selectPlace(3)">
-                  221
-                </el-menu-item>
-                <el-menu-item index="1-4" @click="selectPlace(4)">
-                  222
-                </el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
+            <el-menu-item index="interview" @click="asideSwith('interview')">
+              <i class="el-icon-menu"></i>
+              <span slot="title">开始面试</span>
+            </el-menu-item>
           </el-menu>
+
         </el-aside>
 
         <el-main>
@@ -54,29 +38,22 @@
 export default {
   name: "admin",
   mounted() {
-    this.$router.push({ name: "welcome" });
+
   },
   methods: {
     asideSwith(name) {
       this.$router.push({ name: name });
     },
     selectPlace(path) {
-      this.$router
-        .replace({
-          path: `/interview`,
-          query: {
-            path: path,
-          },
-        })
-        .catch((err) => {
-          err;
-        });
+      this.$store.commit('changePlace',path)
+      this.$router.push('/interview')
+
     },
     logout() {
       this.$router.push({ name: "login" });
       sessionStorage.clear("uuid");
-    },
-  },
+    }
+  }
 };
 </script>
 

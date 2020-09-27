@@ -1,5 +1,14 @@
 <template>
     <div class="interview">
+        <span class="span">面试地点:</span>
+        <el-select v-model="value" placeholder="请选择" class="el-select">
+            <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+            </el-option>
+        </el-select>
         <el-table
                 class="el-table-column"
                 :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
@@ -16,7 +25,7 @@
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="class"
+                    prop="Class"
                     label="班级"
                     width="180">
             </el-table-column>
@@ -56,13 +65,16 @@
     </div>
 </template>
 
-<script>
+    <script>
+    import api from "../api/interview";
+
     export default {
         name:'interview',
         props:['name'],
         methods: {
             //开始面试按钮
             interview(index,data){
+                this.$store.commit('changeType',this.type)
                 this.$router.push({
                     name:'interviewInfo',
                     params:{
@@ -85,104 +97,40 @@
         },
         data() {
             return {
+                type:'',
                 currentPage:1,
                 pageSize:8,
                 total:null,
                 //表单数据
-                tableData:[
-                    {
-                        studentId:'20202020',
-                        name:JSON.parse(this.$route.query.path),
-                        class:'计算机1',
-                        time:'2020-09-01 18:20',
-                        status:'1'
-
-                    },{
-                        studentId:'20202020',
-                        name:'lxl',
-                        class:'计算机1',
-                        time:'2020-09-01 18:20',
-                        status:'1'
-
-                    },
-                    {
-                        studentId:'20202020',
-                        name:'lxl',
-                        class:'计算机1',
-                        time:'2020-09-01 18:20',
-                        status:'1'
-
-                    },{
-                        studentId:'20202020',
-                        name:'lxl',
-                        class:'计算机1',
-                        time:'2020-09-01 18:20',
-                        status:'1'
-
-                    },
-                    {
-                        studentId:'20202020',
-                        name:'lxl',
-                        class:'计算机1',
-                        time:'2020-09-01 18:20',
-                        status:'1'
-
-                    },
-                    {
-                        studentId:'20202020',
-                        name:'lxl',
-                        class:'计算机1',
-                        time:'2020-09-01 18:20',
-                        status:'1'
-
-                    },{
-                        studentId:'20202020',
-                        name:'lxl',
-                        class:'计算机1',
-                        time:'2020-09-01 18:20',
-                        status:'1'
-
-                    },
-                    {
-                        studentId:'20202020',
-                        name:'lxl',
-                        class:'计算机1',
-                        time:'2020-09-01 18:20',
-                        status:'1'
-
-                    },{
-                        studentId:'20202020',
-                        name:'lxl',
-                        class:'计算机1',
-                        time:'2020-09-01 18:20',
-                        status:'1'
-
-                    },{
-                        studentId:'20202020',
-                        name:'lxl11',
-                        class:'计算机1',
-                        time:'2020-09-01 18:20',
-                        status:'1'
-
-                    },
-                    {
-                        studentId:'20202020',
-                        name:'lxl',
-                        class:'计算机1',
-                        time:'2020-09-01 18:20',
-                        status:'1'
-
-                    },
-
-
-
-                ],
+                tableData:[],
+                options: [{
+                    value: '1',
+                    label: '115内'
+                }, {
+                    value: '2',
+                    label: '115外'
+                }, {
+                    value: '3',
+                    label: '221'
+                }, {
+                    value: '4',
+                    label: '222'
+                }],
+                value: ''
 
             }
         },
         mounted(){
             this.total=this.tableData.length;
-            console.log(this.$route.query.path)
+
+        },
+        watch:{
+            value(){
+                api.getStudentsByRoom({
+                    uuid:sessionStorage.getItem('uuid'),
+                    room:this.value
+                },this)
+            }
         }
     }
 </script>
@@ -197,26 +145,16 @@
     .el-pagination1{
         margin-top:20px;
     }
-    /*.interview-info{*/
-    /*    position: relative;*/
-    /*    background-color: white;*/
-    /*    width: 50vw;*/
-    /*    height: 50vh;*/
-    /*    margin: auto;*/
-    /*    .base_info{*/
-    /*        margin: auto;*/
-    /*        font-size: 30px;*/
-    /*        letter-spacing: 5px;*/
-    /*        font-weight: 500;*/
-    /*    }*/
-    /*    .base{*/
-    /*        width: 30vw;*/
-    /*        height: 35vh;*/
-    /*        .base_item{*/
-    /*            width: 30vw;*/
-    /*            display: flex;*/
-    /*        }*/
-    /*    }*/
-
-    /*}*/
+    .span{
+        display: inline-block;
+        position: relative;
+        left: 400px;
+        font-size: 15px;
+        font-weight: 500;
+    }
+    .el-select{
+        left:50%;
+        transform: translateX(-50%);
+        margin: 20px auto;
+    }
 </style>

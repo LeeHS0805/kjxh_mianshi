@@ -7,36 +7,39 @@ export default {
     vm.$store.commit("toggleOverLay");
     //发送请求
     await axios
-      .post(config.serverAddress + "/login", data)
-      .then((res) => {
-        if (res.status == 0) {
-          //存储uuid
-          sessionStorage.setItem("uuid", res.uuid);
-          vm.$message({
-            message: "登录成功！",
-            type: "success",
-          });
-          //跳转到admin
-          vm.$router.push({
-            name: 'admin'
-          })
-        } else {
-          vm.$message({
-            message: res.msg,
-            type: "error",
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .get(config.serverAddress + "/login", {
+            params:{
+                name:data.name,
+                password:data.password
+            }
+        })
+        .then((res) => {
+          let data=res.data
+          if (data.status == 0) {
+            //存储uuid
+            sessionStorage.setItem("uuid", data.uuid);
+            vm.$message({
+              message: "登录成功！",
+              type: "success",
+            });
+            //跳转到admin
+            vm.$router.push({
+              name: 'admin'
+            })
+          } else {
+              console.log(data)
+            vm.$message({
+              message: data.msg,
+              type: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     //关闭遮罩层
     setTimeout(() => {
       vm.$store.commit("toggleOverLay");
-      //tmp
-      vm.$router.push({
-        name: 'admin'
-      })
     }, 1000);
   }
 };

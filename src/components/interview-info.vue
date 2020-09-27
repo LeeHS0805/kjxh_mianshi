@@ -6,7 +6,7 @@
                 <el-button type="primary" class="info-button" @click="back">返回上层</el-button>
             </div>
             <div class="interview-info-content">
-                <div class="interview-info-content1" v-for="(item,index) in base" :key="index">
+                <div class="interview-info-content1" v-for="(item,index) in test" :key="index">
                     <div class="studentTag">{{item.label}}</div>
                     <div class="remark">备注 :</div>
 <!--                    <el-button icon="el-icon-plus" circle class="tag-button1" @click="showTagStore"></el-button>-->
@@ -23,6 +23,7 @@
 
 <script>
     import {Message} from 'element-ui'
+    import api from "../api/interview";
     export default {
         name: "interview_info",
         data(){
@@ -66,6 +67,26 @@
                         showScore:0
                     }
                 ],
+                base2:[
+                    {
+                        label:'进度跟踪',
+                        tag:'李鑫磊的c语言真的很好啊',
+                        score:'',
+                        showScore:1
+                    },
+                    {
+                        label:'小组表现',
+                        tag:'',
+                        score:'',
+                        showScore:1
+                    },
+                    {
+                        label:'评论',
+                        tag:'',
+                        score:'',
+                        showScore:0
+                    }
+                ],
                 tags: [
                     { name: '标签一', type: '' }
                 ]
@@ -74,6 +95,37 @@
         methods:{
             saveData(val){
                 console.log(val);
+
+                if(this.$store.state.type===1) {
+                    let data={
+                        uuid:sessionStorage.getItem("uuid"),
+                        studentId:this.$route.params.studentId,
+                        aspect1:this.base[0].score,
+                        aspect2:this.base[1].score,
+                        aspect3:this.base[2].score,
+                        aspect4:this.base[3].score,
+                        tag1:this.base[0].tag,
+                        tag2:this.base[1].tag,
+                        tag3:this.base[2].tag,
+                        tag4:this.base[3].tag,
+                        task:this.base[4].tag,
+                        comment:this.base[5].tag
+                    }
+                    console.log(data)
+                    api.putFirstInterview(data,this)
+                }
+                if(this.$store.state.type===2){
+                    let data={
+                        uuid:sessionStorage.getItem("uuid"),
+                        studentId:this.$route.query.studentId,
+                        aspect1:this.base2[0].score,
+                        aspect2:this.base2[1].score,
+                        tag1:this.base2[0].tag,
+                        tag2:this.base2[1].tag,
+                        comment:this.base2[2].tag
+                    }
+                    api.putSecondInterview(data,this)
+                }
             },
             back(){
                 this.$router.back(-1)
@@ -92,6 +144,20 @@
                     }
                 }
             }
+        },
+        computed:{
+            test(){
+                if(this.$store.state.type===1){
+                    return this.base
+                }else{
+                    return this.base2
+                }
+            }
+        },
+        mounted() {
+            if(this.$store.state.type==''){
+                this.$router.push('/interview')
+            }
         }
     }
 </script>
@@ -107,7 +173,8 @@
             width: 100%;
             height: 50px;
             position: absolute;
-            top:20px;
+            top:100px;
+            text-align: center;
             .info-button{
                 position: relative;
                 margin: auto 30px;
@@ -147,7 +214,7 @@
                     top:50%;
                     transform: translateY(-50%);
                     height: 40px;
-                    width: 30vw;
+                    width: 25vw;
                     line-height: 40px;
                     left:280px;
                     .tag-box{
@@ -160,6 +227,7 @@
                         overflow: hidden;
                         margin: auto 20px;
                         white-space: nowrap;
+                        line-height: 0;
                     }
 
                 }
@@ -181,26 +249,3 @@
     }
 
 </style>
-
-<!--<div class="base_info">基本信息</div>-->
-<!--<div class="base">-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[0]}}</span>-->
-<!--        <el-button type="primary" icon="el-icon-edit" circle></el-button>-->
-<!--    </div>-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[1]}}</span>-->
-<!--    </div>-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[2]}}</span>-->
-<!--    </div>-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[3]}}</span>-->
-<!--    </div>-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[4]}}</span>-->
-<!--    </div>-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[5]}}</span>-->
-<!--    </div>-->
-<!--</div>-->
