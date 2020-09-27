@@ -5,11 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    overLayShow: false
+    overLayShow: false,
+    type:''
   },
   mutations: {
     toggleOverLay(state) {
       state.overLayShow = !state.overLayShow
+    },
+    changeType(state,type){
+      state.type=type
     }
   },
   actions: {},

@@ -12,7 +12,7 @@
       <div class="interview-info-content">
         <div
           class="interview-info-content1"
-          v-for="(item, index) in base"
+          v-for="(item, index) in test"
           :key="index"
         >
           <div class="studentTag">{{ item.label }}</div>
@@ -37,6 +37,7 @@
 
 <script>
 import { Message } from "element-ui";
+import api from "../api/interview";
 export default {
   name: "interview_info",
   data() {
@@ -45,7 +46,7 @@ export default {
       base: [
         {
           label: "c语言",
-          tag: "李鑫磊的c语言真的很好啊",
+          tag: "",
           score: "",
           showScore: 1,
         },
@@ -80,12 +81,63 @@ export default {
           showScore: 0,
         },
       ],
+      base2: [
+        {
+          label: "进度跟踪",
+          tag: "",
+          score: "",
+          showScore: 1,
+        },
+        {
+          label: "小组表现",
+          tag: "",
+          score: "",
+          showScore: 1,
+        },
+        {
+          label: "评论",
+          tag: "",
+          score: "",
+          showScore: 0,
+        },
+      ],
       tags: [{ name: "标签一", type: "" }],
     };
   },
   methods: {
     saveData(val) {
       console.log(val);
+
+      if (this.$store.state.type === 1) {
+        let data = {
+          uuid: sessionStorage.getItem("uuid"),
+          studentId: this.$route.params.studentId,
+          aspect1: this.base[0].score,
+          aspect2: this.base[1].score,
+          aspect3: this.base[2].score,
+          aspect4: this.base[3].score,
+          tag1: this.base[0].tag,
+          tag2: this.base[1].tag,
+          tag3: this.base[2].tag,
+          tag4: this.base[3].tag,
+          task: this.base[4].tag,
+          comment: this.base[5].tag,
+        };
+        console.log(data);
+        api.putFirstInterview(data, this);
+      }
+      if (this.$store.state.type === 2) {
+        let data = {
+          uuid: sessionStorage.getItem("uuid"),
+          studentId: this.$route.query.studentId,
+          aspect1: this.base2[0].score,
+          aspect2: this.base2[1].score,
+          tag1: this.base2[0].tag,
+          tag2: this.base2[1].tag,
+          comment: this.base2[2].tag,
+        };
+        api.putSecondInterview(data, this);
+      }
     },
     back() {
       this.$router.back(-1);
@@ -95,7 +147,7 @@ export default {
     },
     checkScore(val) {
       if (val.target.value != "") {
-        var reg = new RegExp("^(\\d|[1-9]\\d|100)$");
+        var reg = new RegExp("^(\\d|[1-9]\\d|10)$");
         if (!reg.test(val.target.value)) {
           Message({
             message: "请输入正确的成绩",
@@ -105,6 +157,20 @@ export default {
       }
     },
   },
+  computed: {
+    test() {
+      if (this.$store.state.type === 1) {
+        return this.base;
+      } else {
+        return this.base2;
+      }
+    },
+  },
+  mounted() {
+    if (this.$store.state.type == "") {
+      this.$router.push("/interview");
+    }
+  },
 };
 </script>
 
@@ -113,13 +179,14 @@ export default {
   position: relative;
   margin: 50px auto;
   width: 80vw;
-  height: 80vh;
+  height: 90vh;
   background-color: white;
   .info-button-box {
     width: 100%;
     height: 50px;
     position: absolute;
-    top: 20px;
+    top: 100px;
+    text-align: center;
     .info-button {
       position: relative;
       margin: auto 30px;
@@ -159,8 +226,26 @@ export default {
         transform: translateY(-50%);
         height: 40px;
         width: 25vw;
-
+        line-height: 40px;
         left: 280px;
+        .tag-box {
+          flex: 1;
+          width: 100%;
+          border: none;
+          outline: none;
+          font-size: 15px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          margin: auto 20px;
+          white-space: nowrap;
+          line-height: 0;
+        }
+      }
+      .remark {
+        display: inline;
+        position: absolute;
+        left: 240px;
+        width: max-content;
         .tag-box {
           flex: 1;
           width: 100%;
@@ -190,26 +275,3 @@ export default {
   }
 }
 </style>
-
-<!--<div class="base_info">基本信息</div>-->
-<!--<div class="base">-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[0]}}</span>-->
-<!--        <el-button type="primary" icon="el-icon-edit" circle></el-button>-->
-<!--    </div>-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[1]}}</span>-->
-<!--    </div>-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[2]}}</span>-->
-<!--    </div>-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[3]}}</span>-->
-<!--    </div>-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[4]}}</span>-->
-<!--    </div>-->
-<!--    <div class="base_item">-->
-<!--        <span>{{base[5]}}</span>-->
-<!--    </div>-->
-<!--</div>-->
