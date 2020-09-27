@@ -10,6 +10,7 @@ const routes = [{
     path: '/admin',
     name: 'admin',
     component: () => import( /* webpackChunkName: "about" */ '../views/admin'),
+    redirect: '/welcome',
     children: [{
         path: '/welcome',
         name: 'welcome',
@@ -39,7 +40,7 @@ const routes = [{
         path: '/interviewInfo',
         name: 'interviewInfo',
         component: () => import( /* webpackChunkName: "about" */ '../components/interview-info')
-      }
+      },
     ]
   },
   {

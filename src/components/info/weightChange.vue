@@ -93,7 +93,7 @@ export default {
       let data = "";
       if (this.window1) {
         data = {
-          uuid: "",
+          uuid: sessionStorage.getItem("uuid"),
           interview: 1,
           aspect1: this.weightData.aspect1,
           aspect2: this.weightData.aspect2,
@@ -102,7 +102,7 @@ export default {
         };
       } else {
         data = {
-          uuid: "",
+          uuid: sessionStorage.getItem("uuid"),
           interview: 2,
           aspect1: this.weightData.aspect1,
           aspect2: this.weightData.aspect2,

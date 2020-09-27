@@ -3,15 +3,17 @@ import config from "@/config/config.json";
 
 export default {
   async login(data, vm) {
+    console.log(data);
     //开启遮罩层
     vm.$store.commit("toggleOverLay");
     //发送请求
     await axios
-      .post(config.serverAddress + "/login", data)
+      .get(config.serverAddress + `/login?name=${data.name}&password=${data.password}`)
       .then((res) => {
-        if (res.status == 0) {
+        let data = res.data
+        if (data.status == 0) {
           //存储uuid
-          sessionStorage.setItem("uuid", res.uuid);
+          sessionStorage.setItem("uuid", data.uuid);
           vm.$message({
             message: "登录成功！",
             type: "success",
@@ -22,7 +24,7 @@ export default {
           })
         } else {
           vm.$message({
-            message: res.msg,
+            message: data.msg,
             type: "error",
           });
         }
@@ -33,10 +35,6 @@ export default {
     //关闭遮罩层
     setTimeout(() => {
       vm.$store.commit("toggleOverLay");
-      //tmp
-      vm.$router.push({
-        name: 'admin'
-      })
     }, 1000);
   }
 };

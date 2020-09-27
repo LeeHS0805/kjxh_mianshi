@@ -3,10 +3,10 @@
     <header>
       <div class="warp1">
         <el-input v-model="searchData" placeholder="请输入搜索内容"></el-input>
-        <el-button type="success">搜索</el-button>
+        <el-button type="success" @click="search">搜索</el-button>
       </div>
       <div class="warp2">
-        <el-button>导出excel</el-button>
+        <el-button @click="getExcel">导出excel</el-button>
         <el-button @click="switchTo('weightChange')">修改权值</el-button>
         <el-button @click="timeChange = !timeChange"
           >开启修改时间面板</el-button
@@ -202,6 +202,51 @@ export default {
       //重制步骤
       this.timeChangeWindow.step1 = true;
     },
+    //搜索数据
+    search() {
+      if (this.searchData == undefined || this.searchData == "") {
+        this.$message({
+          type: "error",
+          message: "请输入搜索内容！",
+        });
+        return;
+      }
+      let data = {
+        uuid: sessionStorage.getItem("uuid"),
+        keyWorld: this.searchData,
+      };
+      infoApi.searchApi(data, this);
+    },
+    //导出excel表格
+    getExcel() {
+      require.ensure([], () => {
+        const { export_json_to_excel } = require("../config/Export2Excel");
+        const tHeader = [
+          "学号",
+          "姓名",
+          "班级",
+          "一面时间",
+          "一面分数",
+          "二面分数",
+          "二面时间",
+        ];
+        const filterVal = [
+          "studentId",
+          "name",
+          "class",
+          "time1",
+          "score1",
+          "time2",
+          "score2",
+        ];
+        const list = this.tableData;
+        const data = this.formatJson(filterVal, list);
+        export_json_to_excel(tHeader, data, "SCSE面试系统详情");
+      });
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map((v) => filterVal.map((j) => v[j]));
+    },
   },
   computed: {
     changeTimes() {
@@ -214,6 +259,8 @@ export default {
 
 <style scoped lang="scss">
 #info {
+  text-align: none;
+  line-height: 0;
   header {
     margin-bottom: 30px;
     display: flex;

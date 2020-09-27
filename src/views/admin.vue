@@ -53,9 +53,6 @@
 <script>
 export default {
   name: "admin",
-  mounted() {
-    this.$router.push({ name: "welcome" });
-  },
   methods: {
     asideSwith(name) {
       this.$router.push({ name: name });
