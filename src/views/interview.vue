@@ -44,7 +44,7 @@
                     width="120">
                 <template slot-scope="scope">
                     <el-button
-                            @click.native.prevent="interview(scope.$index, tableData[scope.$index])"
+                            @click.native.prevent="interview(scope.row)"
                             type="text"
                             size="small">
                         开始面试
@@ -73,7 +73,7 @@
         props:['name'],
         methods: {
             //开始面试按钮
-            interview(index,data){
+            interview(data){
                 this.$store.commit('changeType',this.type)
                 this.$router.push({
                     name:'interviewInfo',
@@ -87,11 +87,9 @@
                 });
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
                 this.currentPage = val;    //动态改变
             },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
                 this.pageSize = val;    //动态改变
             }
         },

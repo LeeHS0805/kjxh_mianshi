@@ -5,7 +5,6 @@ import config from '@/config/config.json'
 export default {
   //请求全部信息
   async getAllStudents(uuid, vm) {
-    console.log(`${uuid}请求全部信息`);
     vm.$store.commit('toggleOverLay')
     await apiWarp("/getStudents", {
         uuid
@@ -31,7 +30,6 @@ export default {
 
   //获取具体信息
   async getDetails(data, vm) {
-    console.log(`请求${data.studentId}详细信息`);
     //开启遮罩层
     vm.$store.commit('toggleOverLay')
     await apiWarp('/getStudentById', data, 'post').then((res) => {
@@ -59,7 +57,6 @@ export default {
 
   //修改面试时间
   async changeTime(data, vm) {
-    console.log(`发送修改数据`);
     //开启遮罩层
     vm.$store.commit('toggleOverLay')
     await apiWarp('/setStudentTime', data, 'post').then((res) => {
@@ -90,10 +87,8 @@ export default {
   async changeWeight(data, vm) {
     //开启遮罩层
     vm.$store.commit("toggleOverLay");
-    console.log(`发送权值修改`);
     //发送请求
     await apiWarp('/setWeight', data, 'post').then((res) => {
-      console.log(res);
       let data = res.data;
       if (data.status == 0) {
         vm.$message({
@@ -117,7 +112,6 @@ export default {
 
   //搜索数据
   async searchApi(data, vm) {
-    console.log(`搜索请求${data.keyWorld}`);
     vm.$store.commit('toggleOverLay')
     await apiWarp('/searchStudent', data, 'post').then((res) => {
       let data = res.data

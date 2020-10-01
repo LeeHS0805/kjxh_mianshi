@@ -37,7 +37,7 @@
 
 <script>
 import { Message } from "element-ui";
-import api from "../api/interview";
+import api from "../../api/interview";
 export default {
   name: "interview_info",
   data() {
