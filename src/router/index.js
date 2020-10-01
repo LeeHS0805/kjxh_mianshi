@@ -39,7 +39,7 @@ const routes = [{
       {
         path: '/interviewInfo',
         name: 'interviewInfo',
-        component: () => import( /* webpackChunkName: "about" */ '../components/interview-info')
+        component: () => import( /* webpackChunkName: "about" */ '../components/interviewInfo/interview-info')
       },
     ]
   },

@@ -3,7 +3,6 @@ import config from "@/config/config.json";
 
 export default {
   async login(data, vm) {
-    console.log(data);
     //开启遮罩层
     vm.$store.commit("toggleOverLay");
     //发送请求

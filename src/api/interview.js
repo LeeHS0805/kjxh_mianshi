@@ -5,7 +5,6 @@ import config from '@/config/config.json'
 export default {
     //请求全部信息
     getStudentsByRoom:async (data,vm) => {
-        console.log('ssss')
         await apiWarp("/getStudentsByRoom",data, "post")
             .then((res) => {
                 //处理返回信息
@@ -37,11 +36,9 @@ export default {
 
     //获取具体信息
     async putFirstInterview(data, vm) {
-        console.log(`请求${data.studentId}详细信息`);
         //开启遮罩层
         vm.$store.commit('toggleOverLay')
         await apiWarp('/putFirstInterview', data, 'post').then((res) => {
-            console.log(res);
             let data = res.data
             //处理接受信息
             if (data.status === 0) {
@@ -65,11 +62,9 @@ export default {
     },
 
     async putSecondInterview(data, vm) {
-        console.log(`请求${data.studentId}详细信息`);
         //开启遮罩层
         vm.$store.commit('toggleOverLay')
         await apiWarp('/putSecondInterview', data, 'post').then((res) => {
-            console.log(res);
             let data = res.data
             //处理接受信息
             if (data.status === 0) {

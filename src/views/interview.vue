@@ -11,7 +11,7 @@
         </el-select>
         <el-table
                 class="el-table-column"
-                :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                :data="updateData"
                 style="width: 100%"
                 max-height="90vh">
             <el-table-column
@@ -44,7 +44,7 @@
                     width="120">
                 <template slot-scope="scope">
                     <el-button
-                            @click.native.prevent="interview(scope.$index, tableData[scope.$index])"
+                            @click.native.prevent="interview(scope.row)"
                             type="text"
                             size="small">
                         开始面试
@@ -73,7 +73,7 @@
         props:['name'],
         methods: {
             //开始面试按钮
-            interview(index,data){
+            interview(data){
                 this.$store.commit('changeType',this.type)
                 this.$router.push({
                     name:'interviewInfo',
@@ -87,12 +87,15 @@
                 });
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
                 this.currentPage = val;    //动态改变
             },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
                 this.pageSize = val;    //动态改变
+            }
+        },
+        computed:{
+            updateData(){
+                return this.tableData.slice((this.currentPage-1)*this.pageSize,this.currentPage*this.pageSize)
             }
         },
         data() {
@@ -100,7 +103,7 @@
                 type:'',
                 currentPage:1,
                 pageSize:8,
-                total:null,
+                total:0,
                 //表单数据
                 tableData:[],
                 options: [{
@@ -120,16 +123,15 @@
 
             }
         },
-        mounted(){
-            this.total=this.tableData.length;
-
-        },
         watch:{
             value(){
                 api.getStudentsByRoom({
                     uuid:sessionStorage.getItem('uuid'),
                     room:this.value
                 },this)
+            },
+            tableData(){
+                this.total=this.tableData.length
             }
         }
     }
