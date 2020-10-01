@@ -55,6 +55,7 @@
 import { Message } from "element-ui";
 import api from "../../api/interview";
 import signApi from "../../api/signUp";
+
 export default {
   name: "interview_info",
   data() {
